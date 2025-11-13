@@ -1,8 +1,18 @@
+let hasCbXSS = false;
+
+try {
+  const search = new URLSearchParams(window.location.search);
+  const cbURL = search.get('cb');
+  hasCbXSS = cbURL && ['javascript:', 'data:', 'vbscript:'].includes(new URL(cbURL).protocol);
+} catch(e) {
+  console.error(e);
+}
+
 // Check if current domain is playentry.org
 const isOfficialSite = window.location.hostname.includes('playentry.org');
 
-// If not official site, disable login buttons
-if (!isOfficialSite) {
+// If not official site or XSS, disable login buttons
+if (!isOfficialSite || hasCbXSS) {
   // Keep track of already disabled buttons and shown alert
   const disabledButtons = new Set();
   let alertShown = false;
