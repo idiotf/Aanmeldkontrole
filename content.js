@@ -117,15 +117,17 @@ if (!isOfficialSite || hasCbXSS) {
     disableLoginButton(whalespaceSigninButton);
 
     // Disable input control
-    const inputs = document.querySelectorAll('form input');
-    for (const input of inputs) {
-      input.disabled = true;
-    }
+    if (isLoginPage()) {
+      const inputs = document.querySelectorAll('form input');
+      for (const input of inputs) {
+        input.disabled = true;
+      }
 
-    // Check if this looks like a login page but no buttons were found
-    if (!foundAnyButton && isLoginPage() && !alertShown) {
-      alertShown = true;
-      alert('공식 사이트 로그인 페이지가 아닌 것으로 판단되었지만 로그인 버튼을 찾을 수 없습니다. 주의해 주세요.');
+      // Check if this looks like a login page but no buttons were found
+      if (!foundAnyButton && !alertShown) {
+        alertShown = true;
+        alert('공식 사이트 로그인 페이지가 아닌 것으로 판단되었지만 로그인 버튼을 찾을 수 없습니다. 주의해 주세요.');
+      }
     }
   }
 
